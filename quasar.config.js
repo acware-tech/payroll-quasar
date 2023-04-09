@@ -28,7 +28,10 @@ module.exports = configure(function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
-
+      {
+        path: 'apollo.ts',
+        server: false
+      }
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -55,6 +58,11 @@ module.exports = configure(function (/* ctx */) {
       target: {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16'
+      },
+
+      // passing down to UI code from quasar.config.js
+      env: {
+        VUE_APP_GRAPHQL_URI: 'http://api.pay.wac/graphql'
       },
 
       vueRouterMode: 'hash' // available values: 'hash', 'history'
@@ -105,7 +113,7 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: ['Notify']
     },
 
     // animations: 'all', // --- includes all animations

@@ -5,8 +5,8 @@ import {
   createWebHashHistory,
   createWebHistory
 } from 'vue-router'
-
 import routes from './routes'
+import { useToken } from 'src/composables/token'
 
 /*
  * If not building with SSR mode, you can
@@ -30,6 +30,17 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE)
+  })
+
+  const { isAuthenticated } = useToken()
+  Router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth && !isAuthenticated.value) {
+      next({ name: 'Login' })
+    } else if (to.meta.requiresGuest && isAuthenticated.value) {
+      next({ name: 'Home' })
+    } else {
+      next()
+    }
   })
 
   return Router

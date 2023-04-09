@@ -1,3 +1,64 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useToken } from 'src/composables/token'
+
+interface Component {
+  id: number,
+  name: string;
+  show: boolean;
+  icon?: string;
+}
+
+const components = ref<Component[]>([
+  {
+    id: 0,
+    name: 'QCard',
+    show: false
+  },
+  {
+    id: 1,
+    name: 'QToolbar',
+    show: false
+  },
+  {
+    id: 2,
+    name: 'QDialog',
+    show: false
+  },
+  {
+    id: 3,
+    name: 'QImage',
+    show: false
+  },
+  {
+    id: 4,
+    name: 'QRating',
+    show: false
+  },
+  {
+    id: 5,
+    name: 'QBanner',
+    show: false
+  },
+  {
+    id: 6,
+    name: 'QBar',
+    show: false
+  }
+])
+
+const showComponent = (component: Component) => {
+  if (component.name === 'QDialog') {
+    component.show = true
+    return
+  }
+
+  component.show = !component.show
+}
+
+const rating = ref(3)
+</script>
+
 <template>
   <q-page
     padding
@@ -49,17 +110,21 @@
       v-model="components[2].show"
     >
       <q-card>
-        <q-toolbar class="bg-red">
-          <q-toolbar-title>
+        <q-bar
+          class="bg-red"
+        >
+          <div>
             More Info...
-          </q-toolbar-title>
+          </div>
+          <q-space />
           <q-btn
             v-close-popup
             flat
             round
             icon="fa-solid fa-xmark"
+            dense
           />
-        </q-toolbar>
+        </q-bar>
         <q-card-section>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero in rerum ab. Est alias nemo id eos, omnis quaerat, minima quisquam commodi illum, molestias assumenda eum iste laborum fugiat temporibus.
         </q-card-section>
@@ -141,63 +206,9 @@
       />
       <q-space />
     </q-bar>
+
+    <pre>
+      token: {{ useToken().token }}
+    </pre>
   </q-page>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-interface Component {
-  id: number,
-  name: string;
-  show: boolean;
-  icon?: string;
-}
-const components = ref<Component[]>([
-  {
-    id: 0,
-    name: 'QCard',
-    show: false
-  },
-  {
-    id: 1,
-    name: 'QToolbar',
-    show: false
-  },
-  {
-    id: 2,
-    name: 'QDialog',
-    show: false
-  },
-  {
-    id: 3,
-    name: 'QImage',
-    show: false
-  },
-  {
-    id: 4,
-    name: 'QRating',
-    show: false
-  },
-  {
-    id: 5,
-    name: 'QBanner',
-    show: false
-  },
-  {
-    id: 6,
-    name: 'QBar',
-    show: false
-  }
-])
-
-const showComponent = (component: Component) => {
-  if (component.name === 'QDialog') {
-    component.show = true
-    return
-  }
-
-  component.show = !component.show
-}
-
-const rating = ref(3)
-</script>

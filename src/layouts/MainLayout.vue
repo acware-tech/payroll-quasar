@@ -1,3 +1,14 @@
+<script lang="ts" setup>
+import { ref } from 'vue'
+import MenuItems from 'src/components/MenuItems.vue'
+
+const leftDrawerOpen = ref(false)
+
+const toggleLeftDrawer = () => {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
+</script>
+
 <template>
   <q-layout view="lhr lpR lFf">
     <q-header
@@ -52,21 +63,30 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable>
+        <MenuItems />
+
+        <!-- <q-item
+          v-for="item in list"
+          :key="item.id"
+          clickable
+        >
           <q-item-section
             side
           >
             <q-icon
-              name="mdi-shopping-outline"
+              :name="item.icon"
             />
           </q-item-section>
           <q-item-section>
-            Shopping List
+            {{ item.label }}
           </q-item-section>
-          <q-item-section side>
-            15
+          <q-item-section
+            v-if="item?.subLabel ?? ''"
+            side
+          >
+            {{ item.subLabel }}
           </q-item-section>
-        </q-item>
+        </q-item> -->
       </q-list>
     </q-drawer>
 
@@ -75,13 +95,3 @@
     </q-page-container>
   </q-layout>
 </template>
-
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const leftDrawerOpen = ref(false)
-
-const toggleLeftDrawer = () => {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
-</script>
