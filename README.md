@@ -31,3 +31,7 @@ quasar build
 
 ### Customize the configuration
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+
+### Notes
+  add vue apollo (v4) extension
+  https://github.com/quasarframework/app-extension-apollo/tree/v2
