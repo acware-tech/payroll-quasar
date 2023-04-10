@@ -2,6 +2,7 @@ import type { ApolloClientOptions } from '@apollo/client/core'
 import { createHttpLink, InMemoryCache, from } from '@apollo/client/core'
 // import type { BootFileParams } from '@quasar/app-vite'
 import { setContext } from '@apollo/client/link/context'
+
 import { useToken } from 'src/composables/token'
 
 const authorizationLink = setContext((_, { headers }) => {
