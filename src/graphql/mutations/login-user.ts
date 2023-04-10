@@ -25,8 +25,8 @@ const query = gql`
 `
 
 const variables = ref({
-  email: 'acw@acw.com',
-  password: 'password'
+  email: '',
+  password: ''
 })
 
 export const useLoginUserMutation = () => {
