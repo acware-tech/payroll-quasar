@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 const query = gql`
   query tokens {
     tokens {
-      
+      id
     }
   }
 `

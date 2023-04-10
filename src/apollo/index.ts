@@ -1,28 +1,34 @@
 import type { ApolloClientOptions } from '@apollo/client/core'
-import { createHttpLink, InMemoryCache } from '@apollo/client/core'
+import { createHttpLink, InMemoryCache, from } from '@apollo/client/core'
 // import type { BootFileParams } from '@quasar/app-vite'
+import { setContext } from '@apollo/client/link/context'
 import { useToken } from 'src/composables/token'
+
+const authorizationLink = setContext((_, { headers }) => {
+  const { token } = useToken()
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token.value}` : ''
+    }
+  }
+})
+
+const httpLink = createHttpLink({
+  uri: process.env.VUE_APP_GRAPHQL_URI || 'http://gpayroll-api.acware.tech/graphql'
+})
 
 export /* async */ function getClientOptions (
   // /* {app, router, ...} */ options?: Partial<BootFileParams<any>>
 ) {
-  const { token } = useToken()
-
   return <ApolloClientOptions<unknown>>Object.assign(
     // General options.
     <ApolloClientOptions<unknown>>{
-      link: createHttpLink({
-        uri:
-          process.env.VUE_APP_GRAPHQL_URI ||
-          // Change to your graphql endpoint.
-          'http://gpayroll-api.acware.tech/graphql',
-
-        headers: {
-          Authorization: `Bearer ${token.value}`
-        }
-      }),
-
-      cache: new InMemoryCache()
+      cache: new InMemoryCache(),
+      link: from([
+        authorizationLink,
+        httpLink
+      ])
     },
 
     // Specific Quasar mode options.
