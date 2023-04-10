@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import MenuItems from 'src/components/MenuItems.vue'
 
 const leftDrawerOpen = ref(false)
+const showDialog = ref(false)
 
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
@@ -63,34 +64,17 @@ const toggleLeftDrawer = () => {
           </q-item-section>
         </q-item>
 
-        <MenuItems />
-
-        <!-- <q-item
-          v-for="item in list"
-          :key="item.id"
-          clickable
-        >
-          <q-item-section
-            side
-          >
-            <q-icon
-              :name="item.icon"
-            />
-          </q-item-section>
-          <q-item-section>
-            {{ item.label }}
-          </q-item-section>
-          <q-item-section
-            v-if="item?.subLabel ?? ''"
-            side
-          >
-            {{ item.subLabel }}
-          </q-item-section>
-        </q-item> -->
+        <MenuItems @signout="showDialog=true" />
       </q-list>
     </q-drawer>
 
     <q-page-container>
+      <q-dialog v-model="showDialog">
+        <q-spinner
+          color="primary"
+          size="lg"
+        />
+      </q-dialog>
       <router-view />
     </q-page-container>
   </q-layout>

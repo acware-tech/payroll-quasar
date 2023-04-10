@@ -3,7 +3,7 @@ import { useUserStore } from 'src/stores/user'
 import { ref, computed } from 'vue'
 import { useToken } from 'src/composables/token'
 import { useRouter } from 'vue-router'
-import { useLoginUserMutation } from 'src/graphql/mutations/login-user'
+import { useSigninUserMutation } from 'src/graphql/mutations/signin-user.js'
 
 const showPassword = ref(false)
 const router = useRouter()
@@ -11,13 +11,13 @@ const { setUser } = useUserStore()
 const { setToken, clearToken } = useToken()
 
 const {
-  mutate: loginUser,
+  mutate: signinUser,
   onDone,
   onError,
   loading,
   variables,
   validationErrors
-} = useLoginUserMutation()
+} = useSigninUserMutation()
 
 const formIncomplete = computed(() => variables.value.email.length === 0 || variables.value.password.length === 0)
 const passwordInputType = computed(() => showPassword.value ? 'text' : 'password')
@@ -25,8 +25,8 @@ const emailError = computed(() => validationErrors.value.email)
 const passwordError = computed(() => validationErrors.value.password)
 
 onDone(({ data }) => {
-  setToken(data.loginUser.token)
-  setUser(data.loginUser.user)
+  setToken(data.signinUser.token)
+  setUser(data.signinUser.user)
   router.push({ name: 'Home' })
 })
 
@@ -46,7 +46,7 @@ onError(() => clearToken())
           bordered
         >
           <q-form
-            @submit.prevent.stop="loginUser()"
+            @submit.prevent.stop="signinUser()"
           >
             <q-card-section class="signin-form">
               <q-input
@@ -77,7 +77,7 @@ onError(() => clearToken())
                 type="submit"
                 color="secondary"
                 label="Sign in"
-                class="q-mt-md full-width"
+                class="q-mt-md full-width text-capitalize"
                 :loading="loading"
                 :disable="loading || formIncomplete"
               />
@@ -93,7 +93,7 @@ onError(() => clearToken())
           <q-card-section class="q-pa-none">
             New here?
             <router-link
-              to="/login"
+              to="/signin"
               class="text-blue"
             >
               Create an account.

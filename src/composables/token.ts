@@ -4,7 +4,7 @@ import { useLocalStorage } from '@vueuse/core'
 const token = useLocalStorage<string|null>('auth-token', '')
 
 export const useToken = () => {
-  // token is cleared after a login attempt with invalid token
+  // token is cleared after a signin attempt with invalid token
   const isAuthenticated = computed(() => (token.value?.length ?? 0) > 0)
 
   const clearToken = () => {

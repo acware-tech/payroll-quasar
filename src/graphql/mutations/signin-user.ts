@@ -4,12 +4,12 @@ import { useQuasar } from 'quasar'
 import { ref, computed } from 'vue'
 
 const query = gql`
-  mutation loginUser (
+  mutation signinUser (
     $email: String!
     $password: String!
     $deviceId: String!
   ) {
-    loginUser (
+    signinUser (
       email: $email
       password: $password
       deviceId: $deviceId
@@ -29,14 +29,17 @@ const variables = ref({
   password: ''
 })
 
-export const useLoginUserMutation = () => {
+export const useSigninUserMutation = () => {
+  const $q = useQuasar()
+  const platform = $q.platform.is
+
   const { mutate, onDone, onError, loading, error } = useMutation(
     query,
     () => ({
       variables: {
         email: variables.value.email,
         password: variables.value.password,
-        deviceId: 'web'
+        deviceId: `${platform.platform}.${platform.name}.${platform.version}`
       }
     })
   )
@@ -45,8 +48,6 @@ export const useLoginUserMutation = () => {
     email: error?.value?.graphQLErrors[0]?.extensions?.validation?.email[0] ?? '',
     password: error?.value?.graphQLErrors[0]?.extensions?.validation?.password[0] ?? ''
   }))
-
-  const $q = useQuasar()
 
   onError(() => {
     const gqlError = error?.value?.graphQLErrors[0]

@@ -35,7 +35,7 @@ export default route(function (/* { store, ssrContext } */) {
   const { isAuthenticated } = useToken()
   Router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth && !isAuthenticated.value) {
-      next({ name: 'Login' })
+      next({ name: 'Signin' })
     } else if (to.meta.requiresGuest && isAuthenticated.value) {
       next({ name: 'Home' })
     } else {

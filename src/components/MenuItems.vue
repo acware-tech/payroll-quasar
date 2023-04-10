@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useLogoutUserMutation } from 'src/graphql/mutations/logout-user'
+import { useSignoutUserMutation } from 'src/graphql/mutations/signout-user.js'
 
 export interface MenuItem {
   id: number;
@@ -10,9 +10,17 @@ export interface MenuItem {
   icon?: string;
   callbackFn?: () => void;
   loading?: boolean;
+  route?: string;
 }
 
-const { mutate: logoutUser, loading } = useLogoutUserMutation()
+const { mutate: signoutUser, loading } = useSignoutUserMutation()
+
+const emit = defineEmits<{(event: 'signout'): void}>()
+
+const signout = () => {
+  signoutUser()
+  emit('signout')
+}
 
 const list = ref<MenuItem[]>([
   {
@@ -23,9 +31,16 @@ const list = ref<MenuItem[]>([
   },
   {
     id: 2,
+    title: 'Tokens',
+    icon: 'fa-solid fa-key',
+    route: 'Tokens',
+    loading: loading.value
+  },
+  {
+    id: 100,
     title: 'Sign out',
     icon: 'fa-solid fa-right-from-bracket',
-    callbackFn: logoutUser,
+    callbackFn: signout,
     loading: loading.value
   }
 ])
@@ -38,6 +53,7 @@ const list = ref<MenuItem[]>([
     clickable
     tag="a"
     target="_blank"
+    :to="item.route ? { name: item.route } : ''"
     @click="item.callbackFn"
   >
     <q-item-section

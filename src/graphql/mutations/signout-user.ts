@@ -4,9 +4,9 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useToken } from 'src/composables/token'
 
-export const useLogoutUserMutation = () => {
+export const useSignoutUserMutation = () => {
   const { mutate, onDone, onError, loading, error } = useMutation(
-    gql`mutation logoutUser { logoutUser }`
+    gql`mutation signoutUser { signoutUser }`
   )
 
   const $q = useQuasar()
@@ -14,19 +14,17 @@ export const useLogoutUserMutation = () => {
   const { token } = useToken()
 
   onDone(() => {
-    console.log('onDone Logout')
     $q.notify({
-      message: 'You have signed out successfully!',
-      icon: 'fa-solid fa-lock',
+      message: 'Signed out successfully!',
+      icon: 'fa-solid fa-right-from-bracket fa-beat-fade',
       color: 'positive'
     })
 
     token.value = null
-    router.push({ name: 'Login' })
+    router.push({ name: 'Signin' })
   })
 
   onError(() => {
-    console.log('onError Logout')
     const gqlError = error?.value?.graphQLErrors[0]
     if (gqlError?.message.length) {
       $q.notify({

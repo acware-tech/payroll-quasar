@@ -12,13 +12,21 @@ const routes: RouteRecordRaw[] = [
         meta: {
           requiresAuth: true
         }
+      },
+      {
+        path: 'tokens',
+        name: 'Tokens',
+        component: () => import('pages/UserSettingsPage.vue'),
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('pages/LoginPage.vue'),
+    path: '/sigin',
+    name: 'Signin',
+    component: () => import('src/pages/SigninPage.vue'),
     meta: {
       requiresGuest: true
     }
